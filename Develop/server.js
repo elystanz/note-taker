@@ -42,17 +42,20 @@ function createNote(body, notesArray) {
 }
 
 app.post('/api/notes', (req, res) => {
-    const newNote = createNote(req.body, noteData);
-    res.json(newNote);
+    const newNote = req.body
+        newNote.id = notes.length.toString()
+        notes.push(newNote)
+        fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringify(notes))
+        res.json(newNote)
 });
 
 // delete note
-// app.delete('/api/notes/:id', (req, res) => {
-//     const deleteNote = notes.find((note) => note.id === req.params.id);
-//     notes = notes.filter((note) => note.id != deleteNote.id);
-//     fs.writeFileSync(path.join(__dirname, './db/db.json'), JSON.stringify(notes));
-//     res.json(deleteNote);
-// });
+app.delete('/api/notes/:id', (req, res) => {
+    const deleteNote = notes.find((note) => note.id === req.params.id);
+    notes = notes.filter((note) => note.id != deleteNote.id);
+    fs.writeFileSync(path.join(__dirname, './db/db.json'), JSON.stringify(notes));
+    res.json(deleteNote);
+});
 
 app.listen(PORT, () => {
     console.log(`App listening at http://localhost:${PORT}`);
