@@ -24,38 +24,29 @@ app.get('/notes', (req, res) => {
 app.get('/api/notes', (req, res) => res.json(noteData));
 
 // post notes
-
-function createNote(body, notesArray) {
-    const newNote = body;
-    if (!Array.isArray(notesArray))
-        notesArray = [];
-    if (notesArray.length === 0)
-        notesArray.push[0];
-    
-    body.id === notesArray[0];
-    notesArray[0]++;
-
-    notesArray.push(newNote);
-    fs.writeFileSync(path.join(__dirname, './db/db.json'), JSON.stringify(notesArray));
-
-    return newNote;
-}
+app.post("/api/notes", (req, res) => {
+    const newNote = req.body
+    newNote.id = noteData.length.toString()
+    noteData.push(newNote)
+    fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringify(noteData))
+    res.json(newNote)
+  })
 
 app.post('/api/notes', (req, res) => {
     const newNote = req.body
-        newNote.id = notes.length.toString()
-        notes.push(newNote)
-        fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringify(notes))
+        newNote.id = noteData.length.toString()
+        noteData.push(newNote)
+        fs.writeFileSync(path.join(__dirname, "./db/db.json"), JSON.stringify(noteData))
         res.json(newNote)
 });
 
 // delete note
-app.delete('/api/notes/:id', (req, res) => {
-    const deleteNote = notes.find((note) => note.id === req.params.id);
-    notes = notes.filter((note) => note.id != deleteNote.id);
-    fs.writeFileSync(path.join(__dirname, './db/db.json'), JSON.stringify(notes));
-    res.json(deleteNote);
-});
+// app.delete('/api/notes/:id', (req, res) => {
+//     const deleteNote = notes.find((note) => note.id === req.params.id);
+//     notes = notes.filter((note) => note.id != deleteNote.id);
+//     fs.writeFileSync(path.join(__dirname, './db/db.json'), JSON.stringify(notes));
+//     res.json(deleteNote);
+// });
 
 app.listen(PORT, () => {
     console.log(`App listening at http://localhost:${PORT}`);
